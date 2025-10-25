@@ -813,7 +813,7 @@ def format_telegram_message(pair, signal_type, detected_price, detected_time, cu
 
 def create_header_image(text="📢 NEW SIGNAL DETECTED", bg_color=(0, 102, 255), text_color=(255, 255, 255)):
     # Load font
-    font_size = 60
+    font_size = 24
     try:
         font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
     except:
