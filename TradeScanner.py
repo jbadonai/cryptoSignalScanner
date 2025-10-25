@@ -809,29 +809,40 @@ def format_telegram_message(pair, signal_type, detected_price, detected_time, cu
     return msg
 
  # ===================== HEADER IMAGE GENERATOR =====================
+
+
 def create_header_image(text="📢 NEW SIGNAL DETECTED", bg_color=(0, 102, 255), text_color=(255, 255, 255)):
-    width = 100
-    height = 50
+    # Load font
     font_size = 60
-
-    img = Image.new("RGB", (width, height), color=bg_color)
-    draw = ImageDraw.Draw(img)
-
     try:
         font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
     except:
         font = ImageFont.load_default()
 
+    # Estimate text size
+    dummy_img = Image.new("RGB", (1, 1))
+    draw = ImageDraw.Draw(dummy_img)
     text_bbox = draw.textbbox((0, 0), text, font=font)
     text_w = text_bbox[2] - text_bbox[0]
     text_h = text_bbox[3] - text_bbox[1]
-    position = ((width - text_w) // 2, (height - text_h) // 2)
 
+    # Add padding around text
+    padding_x = 40
+    padding_y = 20
+    width = text_w + padding_x * 2
+    height = text_h + padding_y * 2
+
+    # Create final image
+    img = Image.new("RGB", (width, height), color=bg_color)
+    draw = ImageDraw.Draw(img)
+    position = (padding_x, padding_y)
     draw.text(position, text, fill=text_color, font=font)
 
+    # Convert to bytes
     img_bytes = io.BytesIO()
     img.save(img_bytes, format="PNG")
     img_bytes.seek(0)
+
     return img_bytes
 
 
